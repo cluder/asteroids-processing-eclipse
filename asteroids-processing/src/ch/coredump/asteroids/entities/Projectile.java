@@ -11,13 +11,13 @@ public class Projectile extends BaseEntity {
 	// particle can live 2 seconds
 	final long timeToLive = 2000;
 	final long created;
-	boolean dead = false;
 
 	public Projectile(float x, float y, float rotation) {
 		super(x, y);
 		this.rotation = rotation;
 
 		created = System.currentTimeMillis();
+		setBoundingBoxSize(size, size);
 	}
 
 	@Override
@@ -37,8 +37,10 @@ public class Projectile extends BaseEntity {
 		float velX = direction.x * speed;
 		float velY = direction.y * speed;
 
-		x += velX * tpf;
-		y += velY * tpf;
+		float newX = getX() + velX * tpf;
+		float newY = getY() + velY * tpf;
+
+		setPosition(newX, newY);
 
 		// check if time to live is reached
 		if (created + timeToLive < System.currentTimeMillis()) {
@@ -53,7 +55,7 @@ public class Projectile extends BaseEntity {
 		}
 		processing.pushMatrix();
 		{
-			processing.translate(x, y);
+			processing.translate(getX(), getY());
 			processing.rotate(PApplet.radians(rotation));
 			// create a line from the spaceship's tip
 			processing.line(0, -size, 0, 0);
@@ -61,7 +63,4 @@ public class Projectile extends BaseEntity {
 		processing.popMatrix();
 	}
 
-	public boolean isDead() {
-		return dead;
-	}
 }

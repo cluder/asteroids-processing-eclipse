@@ -19,6 +19,7 @@ public class Spaceship extends BaseEntity {
 
 	public Spaceship(float x, float y) {
 		super(x, y);
+		setBoundingBoxSize(size, size);
 	}
 
 	/**
@@ -43,7 +44,7 @@ public class Spaceship extends BaseEntity {
 
 		processing.pushMatrix();
 		{
-			processing.translate(x, y);
+			processing.translate(getX(), getY());
 			processing.rotate(PApplet.radians(currentRotation));
 			processing.triangle(x1, y1, x2, y2, x3, y3);
 		}
@@ -67,8 +68,11 @@ public class Spaceship extends BaseEntity {
 			float velX = direction.x * speed;
 			float velY = direction.y * speed;
 
-			x += velX * tpf;
-			y += velY * tpf;
+			float newX = getX() + velX * tpf;
+			float newY = getY() + velY * tpf;
+
+			setPosition(newX, newY);
+
 		}
 
 		if (rotateLeft) {

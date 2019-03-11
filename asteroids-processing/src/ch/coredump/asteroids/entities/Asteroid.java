@@ -7,6 +7,7 @@ public class Asteroid extends BaseEntity {
 
 	public Asteroid(float x, float y) {
 		super(x, y);
+		setBoundingBoxSize(size, size);
 	}
 
 	@Override

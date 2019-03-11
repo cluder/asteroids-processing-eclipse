@@ -7,5 +7,6 @@
 			<attribute name="javadoc_location" value="https://processing.github.io/processing-javadocs/core/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

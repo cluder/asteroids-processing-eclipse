@@ -23,7 +23,7 @@ public class AsteroidsMain extends PApplet {
 		manager.spawnAsteroids(5);
 
 		player = new Spaceship(manager.getWidth() / 2, manager.getHeight() / 2);
-		manager.addEntity(player);
+		manager.addPlayer(player);
 
 	}
 
@@ -74,7 +74,7 @@ public class AsteroidsMain extends PApplet {
 	@Override
 	public void keyPressed() {
 		super.keyPressed();
-		movementKey(keyCode, true);
+		movementKey(key, keyCode, true);
 	}
 
 	@Override
@@ -82,17 +82,17 @@ public class AsteroidsMain extends PApplet {
 		System.out.println("keyReleased()");
 		super.keyReleased(event);
 
-		movementKey(keyCode, false);
+		movementKey(key, keyCode, false);
 	}
 
-	private void movementKey(int keyCode, boolean pressed) {
-		if (keyCode == UP) {
+	private void movementKey(char key, int keyCode, boolean pressed) {
+		if (keyCode == UP || key == 'w') {
 			player.moveUp(pressed);
 		}
-		if (keyCode == LEFT) {
+		if (keyCode == LEFT || key == 'a') {
 			player.rotateLeft(pressed);
 		}
-		if (keyCode == RIGHT) {
+		if (keyCode == RIGHT || key == 'd') {
 			player.rotateRight(pressed);
 		}
 
@@ -111,6 +111,6 @@ public class AsteroidsMain extends PApplet {
 		super.mousePressed();
 
 		Projectile p = new Projectile(player.getX(), player.getY(), player.getRotation());
-		manager.addEntity(p);
+		manager.addProjectile(p);
 	}
 }
