@@ -36,7 +36,7 @@ public class AsteroidsMain extends PApplet {
 		System.out.println("setup()");
 		super.setup();
 
-		// almost black
+		// clear screen
 		background(0);
 
 		// framerate 30
