@@ -3,11 +3,14 @@ package ch.coredump.asteroids.entities;
 import processing.core.PApplet;
 
 public abstract class BaseEntity {
+	private float rotation = 0;
 	private float x = 0;
 	private float y = 0;
-	protected float speed = 3;
+	protected float speed = 0.1f;
 	BoundingBox bb;
 	boolean dead = false;
+
+	boolean drawBoundingBox = false;
 
 	public BaseEntity(float x, float y) {
 		this.x = x;
@@ -18,25 +21,37 @@ public abstract class BaseEntity {
 		bb.setPosition(x, y);
 	}
 
-	protected void setBoundingBoxSize(float x, float y) {
-		bb.setSize(x, y);
+	protected void setBoundingBoxSize(float w, float h) {
+		bb.setSize(w, h);
+	}
+
+	protected void setBoundingBoxSize(float size) {
+		bb.setSize(size, size);
 	}
 
 	public BoundingBox getBoundingBox() {
 		return bb;
 	}
 
+	public float getRotation() {
+		return rotation;
+	}
+
+	public void setRotation(float rotation) {
+		this.rotation = rotation;
+	}
+
+	public void setDrawBoundingBox(boolean drawBoundingBox) {
+		this.drawBoundingBox = drawBoundingBox;
+	}
+
 	/**
-	 * Draws the entity on screen
-	 * 
-	 * @param processing
+	 * draws the bounding box if enabled.
 	 */
 	public void render(PApplet processing) {
-		// default white circle
-		processing.fill(255);
-		processing.circle(x, y, 25);
-
-		processing.noFill();
+		if (drawBoundingBox) {
+			bb.render(processing);
+		}
 	}
 
 	/**

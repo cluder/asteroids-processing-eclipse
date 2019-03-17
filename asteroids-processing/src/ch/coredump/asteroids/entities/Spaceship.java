@@ -12,10 +12,7 @@ public class Spaceship extends BaseEntity {
 	int size = 20;
 
 	// rotation speed
-	float rotationSpeed = 2f;
-
-	// current rotation in °, 0 points north
-	float currentRotation = -0;
+	float rotationSpeed = 0.1f;
 
 	public Spaceship(float x, float y) {
 		super(x, y);
@@ -29,9 +26,13 @@ public class Spaceship extends BaseEntity {
 	 * p2 = bottom left<br>
 	 */
 	@Override
-	public void render(PApplet processing) {
-		processing.noFill();
-		processing.stroke(255);
+	public void render(PApplet p) {
+		super.render(p);
+
+		p.push();
+
+		p.noFill();
+		p.stroke(255);
 
 		final float x1 = 0;
 		final float y1 = -size / 2;
@@ -42,13 +43,10 @@ public class Spaceship extends BaseEntity {
 		final float x3 = -size / 2;
 		final float y3 = size / 2;
 
-		processing.pushMatrix();
-		{
-			processing.translate(getX(), getY());
-			processing.rotate(PApplet.radians(currentRotation));
-			processing.triangle(x1, y1, x2, y2, x3, y3);
-		}
-		processing.popMatrix();
+		p.translate(getX(), getY());
+		p.rotate(PApplet.radians(getRotation()));
+		p.triangle(x1, y1, x2, y2, x3, y3);
+		p.pop();
 	}
 
 	@Override
@@ -57,7 +55,7 @@ public class Spaceship extends BaseEntity {
 
 		if (moveUp) {
 			// we subtract 90°, so that 0° points north
-			final double rotationRadians = Math.toRadians(currentRotation - 90);
+			final double rotationRadians = Math.toRadians(getRotation() - 90);
 			float dirX = (float) Math.cos(rotationRadians);
 			float dirY = (float) Math.sin(rotationRadians);
 			PVector direction = new PVector(dirX, dirY);
@@ -76,14 +74,14 @@ public class Spaceship extends BaseEntity {
 		}
 
 		if (rotateLeft) {
-			currentRotation -= rotationSpeedPerFrame;
+			setRotation(getRotation() - rotationSpeedPerFrame);
 		}
 
 		if (rotateRight) {
-			currentRotation += rotationSpeedPerFrame;
+			setRotation(getRotation() + rotationSpeedPerFrame);
 		}
 
-		currentRotation %= 360;
+		setRotation(getRotation() % 360);
 	}
 
 	public void moveUp(boolean value) {
@@ -98,8 +96,7 @@ public class Spaceship extends BaseEntity {
 		rotateRight = value;
 	}
 
-	public float getRotation() {
-		return currentRotation;
+	public Projectile fire() {
+		return new Projectile(getX(), getY(), getRotation());
 	}
-
 }

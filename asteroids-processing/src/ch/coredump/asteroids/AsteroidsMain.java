@@ -1,6 +1,5 @@
 package ch.coredump.asteroids;
 
-import ch.coredump.asteroids.entities.Projectile;
 import ch.coredump.asteroids.entities.Spaceship;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
@@ -17,14 +16,15 @@ public class AsteroidsMain extends PApplet {
 	}
 
 	public AsteroidsMain() {
-		manager = new GameManager(800, 600);
 
-		// create one asteroid and player
-		manager.spawnAsteroids(5);
+	}
 
-		player = new Spaceship(manager.getWidth() / 2, manager.getHeight() / 2);
-		manager.addPlayer(player);
-
+	/**
+	 * Set screen size.
+	 */
+	@Override
+	public void settings() {
+		size(800, 600);
 	}
 
 	/**
@@ -33,24 +33,16 @@ public class AsteroidsMain extends PApplet {
 	 */
 	@Override
 	public void setup() {
-		System.out.println("setup()");
-		super.setup();
+		manager = new GameManager(this, width, height);
 
-		// clear screen
-		background(0);
+		// create one asteroid and player
+		manager.spawnAsteroids(10);
 
-		// framerate 30
+		player = new Spaceship(manager.getWidth() / 2, manager.getHeight() / 2);
+		manager.addPlayer(player);
+
+		// target framerate 30 fps
 		frameRate(30);
-	}
-
-	/**
-	 * Set screen size.
-	 */
-	@Override
-	public void settings() {
-		System.out.println("settings()");
-		super.settings();
-		size(manager.getWidth(), manager.getHeight());
 	}
 
 	/**
@@ -66,22 +58,12 @@ public class AsteroidsMain extends PApplet {
 	}
 
 	@Override
-	public synchronized void redraw() {
-		System.out.println("redraw()");
-		super.redraw();
-	}
-
-	@Override
 	public void keyPressed() {
-		super.keyPressed();
 		movementKey(key, keyCode, true);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent event) {
-		System.out.println("keyReleased()");
-		super.keyReleased(event);
-
 		movementKey(key, keyCode, false);
 	}
 
@@ -99,6 +81,10 @@ public class AsteroidsMain extends PApplet {
 		if (keyCode == BACKSPACE) {
 			reset();
 		}
+		if (key == ' ' && pressed) {
+			fire();
+		}
+
 	}
 
 	private void reset() {
@@ -107,10 +93,10 @@ public class AsteroidsMain extends PApplet {
 
 	@Override
 	public void mousePressed() {
-		System.out.println("mousePressed()");
-		super.mousePressed();
+		fire();
+	}
 
-		Projectile p = new Projectile(player.getX(), player.getY(), player.getRotation());
-		manager.addProjectile(p);
+	private void fire() {
+		manager.addProjectile(player.fire());
 	}
 }

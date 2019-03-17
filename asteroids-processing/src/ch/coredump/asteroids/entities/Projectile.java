@@ -4,17 +4,16 @@ import processing.core.PApplet;
 import processing.core.PVector;
 
 public class Projectile extends BaseEntity {
-	float rotation;
-	float speed = 5;
-	float size = 10;
+	float speed = 0.2f;
+	float size = 5;
 
-	// particle can live 2 seconds
-	final long timeToLive = 2000;
+	// time to live in ms
+	final long timeToLive = 1000;
 	final long created;
 
 	public Projectile(float x, float y, float rotation) {
 		super(x, y);
-		this.rotation = rotation;
+		setRotation(rotation);
 
 		created = System.currentTimeMillis();
 		setBoundingBoxSize(size, size);
@@ -25,8 +24,9 @@ public class Projectile extends BaseEntity {
 		if (dead) {
 			return;
 		}
+
 		// we subtract 90°, so that 0° points north
-		final double rotationRadians = Math.toRadians(rotation - 90);
+		final double rotationRadians = Math.toRadians(getRotation() - 90);
 		float dirX = (float) Math.cos(rotationRadians);
 		float dirY = (float) Math.sin(rotationRadians);
 		PVector direction = new PVector(dirX, dirY);
@@ -49,18 +49,19 @@ public class Projectile extends BaseEntity {
 	}
 
 	@Override
-	public void render(PApplet processing) {
+	public void render(PApplet p) {
 		if (dead) {
 			return;
 		}
-		processing.pushMatrix();
-		{
-			processing.translate(getX(), getY());
-			processing.rotate(PApplet.radians(rotation));
-			// create a line from the spaceship's tip
-			processing.line(0, -size, 0, 0);
-		}
-		processing.popMatrix();
+		super.render(p);
+
+		p.push();
+		p.stroke(255);
+		p.translate(getX(), getY());
+		// create a line from the spaceship's tip
+		p.rotate(PApplet.radians(getRotation()));
+		p.line(0, -size, 0, 0);
+		p.pop();
 	}
 
 }

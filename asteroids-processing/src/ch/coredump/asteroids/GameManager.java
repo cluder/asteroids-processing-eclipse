@@ -19,14 +19,18 @@ public class GameManager {
 	private List<Projectile> projectiles = new ArrayList<>();
 	private int width;
 	private int height;
+	private PApplet processing;
 
 	int numHits = 0;
 
 	private Spaceship spaceship;
 
-	public GameManager(int width, int heigth) {
+	long lastFrameTime = System.currentTimeMillis();
+
+	public GameManager(PApplet p, int width, int heigth) {
 		this.width = width;
 		this.height = heigth;
+		this.processing = p;
 	}
 
 	void addAsteroid(Asteroid e) {
@@ -45,8 +49,9 @@ public class GameManager {
 	 * Updates/moves the game entities
 	 */
 	void update(float fps) {
-		// time per frame
-		float tpf = 60 / fps;
+		final long currentTime = System.currentTimeMillis();
+		long timePerFrame = currentTime - lastFrameTime;
+		lastFrameTime = currentTime;
 
 		// temporary list
 		List<BaseEntity> deadProjectiles = new ArrayList<>();
@@ -54,7 +59,7 @@ public class GameManager {
 
 		// update projectiles
 		for (Projectile e : projectiles) {
-			e.update(tpf);
+			e.update(timePerFrame);
 			Projectile p = (Projectile) e;
 			if (p.isDead()) {
 				deadProjectiles.add(e);
@@ -81,13 +86,13 @@ public class GameManager {
 
 		// update other entities
 		for (BaseEntity e : asteroids) {
-			e.update(tpf);
+			e.update(timePerFrame);
 		}
 		for (BaseEntity e : projectiles) {
-			e.update(tpf);
+			e.update(timePerFrame);
 		}
 
-		spaceship.update(tpf);
+		spaceship.update(timePerFrame);
 
 		// spawn new asteroids
 		spawnAsteroids(numAsteroidsHit);
@@ -116,7 +121,7 @@ public class GameManager {
 	public void spawnAsteroids(int num) {
 		Random r = new Random();
 		for (int i = 0; i < num; i++) {
-			Asteroid a = new Asteroid(r.nextInt(width), r.nextInt(height));
+			Asteroid a = new Asteroid(processing, r.nextInt(width), r.nextInt(height));
 			addAsteroid(a);
 		}
 	}
@@ -127,6 +132,10 @@ public class GameManager {
 
 	public int getWidth() {
 		return width;
+	}
+
+	public PApplet getProcessing() {
+		return processing;
 	}
 
 }
