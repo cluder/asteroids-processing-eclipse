@@ -33,6 +33,7 @@ public class AsteroidsMain extends PApplet {
 	 */
 	@Override
 	public void setup() {
+		noCursor();
 		manager = new GameManager(this, width, height);
 
 		// create one asteroid and player
