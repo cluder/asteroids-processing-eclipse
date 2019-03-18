@@ -25,6 +25,7 @@ public class AsteroidsMain extends PApplet {
 	@Override
 	public void settings() {
 		size(800, 600);
+//		size(800, 600, P2D);
 	}
 
 	/**
@@ -39,7 +40,7 @@ public class AsteroidsMain extends PApplet {
 		// create one asteroid and player
 		manager.spawnAsteroids(10);
 
-		player = new Spaceship(manager.getWidth() / 2, manager.getHeight() / 2);
+		player = new Spaceship(width / 2, height / 2);
 		manager.addPlayer(player);
 
 		// target framerate 30 fps
@@ -52,10 +53,11 @@ public class AsteroidsMain extends PApplet {
 	 */
 	@Override
 	public void draw() {
+		frameRate(30);
 		background(20);
 
-		manager.update(frameRate);
-		manager.drawAll(this);
+		manager.update();
+		manager.render(this);
 	}
 
 	@Override
@@ -86,6 +88,9 @@ public class AsteroidsMain extends PApplet {
 			fire();
 		}
 
+		if (key == 'r') {
+			manager.resetStarfield(5, 100);
+		}
 	}
 
 	private void reset() {

@@ -42,10 +42,9 @@ public class Asteroid extends BaseEntity {
 			var -= maxVar / 2;
 			float percentDone = (i / (float) (vCount));
 			float rad = (float) (percentDone * 2 * Math.PI);
-			System.out.println(percentDone);
 			float vx = (radius + var) * (float) Math.cos(rad);
 			float vy = (radius + var) * (float) Math.sin(rad);
-			shape.vertex(vx, vy);
+			shape.vertex(vx, vy, 0);
 		}
 		shape.endShape(PConstants.CLOSE);
 	}
@@ -58,6 +57,7 @@ public class Asteroid extends BaseEntity {
 		p.translate(getX(), getY());
 		p.rotate(PApplet.radians(getRotation()));
 		p.shape(shape);
+
 		p.pop();
 	}
 

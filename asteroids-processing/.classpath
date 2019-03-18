@@ -8,5 +8,17 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
+	<classpathentry kind="lib" path="lib/renderer/gluegen-rt-natives-linux-amd64.jar"/>
+	<classpathentry kind="lib" path="lib/renderer/gluegen-rt-natives-linux-i586.jar"/>
+	<classpathentry kind="lib" path="lib/renderer/gluegen-rt-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="lib/renderer/gluegen-rt-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="lib/renderer/gluegen-rt-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="lib/renderer/gluegen-rt.jar"/>
+	<classpathentry kind="lib" path="lib/renderer/jogl-all-natives-linux-amd64.jar"/>
+	<classpathentry kind="lib" path="lib/renderer/jogl-all-natives-linux-i586.jar"/>
+	<classpathentry kind="lib" path="lib/renderer/jogl-all-natives-macosx-universal.jar"/>
+	<classpathentry kind="lib" path="lib/renderer/jogl-all-natives-windows-amd64.jar"/>
+	<classpathentry kind="lib" path="lib/renderer/jogl-all-natives-windows-i586.jar"/>
+	<classpathentry kind="lib" path="lib/renderer/jogl-all.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

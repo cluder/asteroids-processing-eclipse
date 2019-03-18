@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import ch.coredump.asteroids.effects.ParallaxStarField;
 import ch.coredump.asteroids.entities.Asteroid;
 import ch.coredump.asteroids.entities.BaseEntity;
 import ch.coredump.asteroids.entities.BoundingBox;
@@ -15,6 +16,7 @@ import processing.core.PApplet;
  * Game manager responsible for updating / rendering all game entities.
  */
 public class GameManager {
+	private ParallaxStarField starField;
 	private List<Asteroid> asteroids = new ArrayList<>();
 	private List<Projectile> projectiles = new ArrayList<>();
 	private int width;
@@ -26,11 +28,14 @@ public class GameManager {
 	private Spaceship spaceship;
 
 	long lastFrameTime = System.currentTimeMillis();
+	long tpf = 0;
 
 	public GameManager(PApplet p, int width, int heigth) {
 		this.width = width;
 		this.height = heigth;
 		this.processing = p;
+
+		starField = new ParallaxStarField(this, 100, 3, width, heigth);
 	}
 
 	void addAsteroid(Asteroid e) {
@@ -48,9 +53,9 @@ public class GameManager {
 	/**
 	 * Updates/moves the game entities
 	 */
-	void update(float fps) {
+	void update() {
 		final long currentTime = System.currentTimeMillis();
-		long timePerFrame = currentTime - lastFrameTime;
+		tpf = currentTime - lastFrameTime;
 		lastFrameTime = currentTime;
 
 		// temporary list
@@ -59,7 +64,7 @@ public class GameManager {
 
 		// update projectiles
 		for (Projectile e : projectiles) {
-			e.update(timePerFrame);
+			e.update(tpf);
 			Projectile p = (Projectile) e;
 			if (p.isDead()) {
 				deadProjectiles.add(e);
@@ -86,33 +91,42 @@ public class GameManager {
 
 		// update other entities
 		for (BaseEntity e : asteroids) {
-			e.update(timePerFrame);
+			e.update(tpf);
 		}
 		for (BaseEntity e : projectiles) {
-			e.update(timePerFrame);
+			e.update(tpf);
 		}
 
-		spaceship.update(timePerFrame);
+		spaceship.update(tpf);
 
 		// spawn new asteroids
 		spawnAsteroids(numAsteroidsHit);
+
+		starField.update(tpf);
 	}
 
 	/**
 	 * Draws the game entities.
 	 */
-	void drawAll(PApplet processing) {
-		spaceship.render(processing);
+	void render(PApplet p) {
+		spaceship.render(p);
 
 		for (BaseEntity e : asteroids) {
-			e.render(processing);
+			e.render(p);
 		}
 		for (BaseEntity e : projectiles) {
-			e.render(processing);
+			e.render(p);
 		}
 
-		processing.textSize(20);
-		processing.text("Hits: " + numHits, 20, 30);
+		int fpsFrameTime = Math.round(1000.f / tpf);
+
+		p.textSize(15);
+		p.text("FPS (internal): " + Math.round(p.frameRate) + " frametime:" + fpsFrameTime, 20, 20);
+
+		p.textSize(20);
+		p.text("Hits: " + numHits, 20, 60);
+
+		starField.render(p);
 	}
 
 	/**
@@ -138,4 +152,11 @@ public class GameManager {
 		return processing;
 	}
 
+	public Spaceship getSpaceship() {
+		return spaceship;
+	}
+
+	public void resetStarfield(int layers, int stars) {
+		starField.reset(layers, stars);
+	}
 }

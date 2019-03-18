@@ -67,7 +67,7 @@ public class BoundingBox {
 		p.push();
 
 		p.noFill();
-		p.stroke(50);
+		p.stroke(70);
 		p.translate(x, y);
 		p.rect(0, 0, w, h);
 
