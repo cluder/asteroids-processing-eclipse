@@ -43,7 +43,7 @@ public class AsteroidsMain extends PApplet {
 		manager = new GameManager(this, width, height, 300, 3);
 
 		// create asteroids and player
-		manager.spawnAsteroids(10);
+		manager.spawnAsteroids(15);
 
 		player = new Spaceship(width / 4, height / 2);
 		player.setRotation(90);
