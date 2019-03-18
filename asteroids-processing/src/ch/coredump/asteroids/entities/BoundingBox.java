@@ -15,6 +15,14 @@ public class BoundingBox {
 	public BoundingBox() {
 	}
 
+	public float getW() {
+		return w;
+	}
+
+	public float getH() {
+		return h;
+	}
+
 	public void setSize(float w, float h) {
 		this.w = w;
 		this.h = h;

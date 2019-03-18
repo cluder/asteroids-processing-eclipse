@@ -2,14 +2,14 @@ package ch.coredump.asteroids.entities;
 
 import processing.core.PApplet;
 import processing.core.PConstants;
-import processing.core.PGraphics;
 import processing.core.PShape;
 
 public class Asteroid extends BaseEntity {
 	float size;
-	PGraphics gfx;
 	PShape shape;
 	float rotationSpeed = 0.01f;
+	float speedX = -0.1f;
+	float speedY = 0f;
 
 	public Asteroid(PApplet p, float x, float y) {
 		super(x, y);
@@ -17,18 +17,21 @@ public class Asteroid extends BaseEntity {
 		float rotVar = 0.1f;
 		rotationSpeed += ((float) Math.random() * rotVar) - rotVar / 2;
 
+		// speed variance
+		speedX *= Math.random() * 3;
+		speedY = (float) (Math.random() * 0.05f);
+
 		float sizeVar = 15;
 		size = 30;
 		size += ((float) Math.random() * sizeVar) - sizeVar / 2;
 		setBoundingBoxSize(size, size);
 
-		gfx = p.createGraphics((int) size, (int) size);
-		init(p);
+		initShape(p);
 	}
 
-	private void init(PApplet p) {
+	private void initShape(PApplet p) {
 		// create a custom shape
-		shape = gfx.createShape();
+		shape = p.createShape(PShape.GEOMETRY);
 		shape.beginShape();
 		shape.stroke(255);
 		shape.strokeWeight(2);
@@ -44,7 +47,7 @@ public class Asteroid extends BaseEntity {
 			float rad = (float) (percentDone * 2 * Math.PI);
 			float vx = (radius + var) * (float) Math.cos(rad);
 			float vy = (radius + var) * (float) Math.sin(rad);
-			shape.vertex(vx, vy, 0);
+			shape.vertex(vx, vy);
 		}
 		shape.endShape(PConstants.CLOSE);
 	}
@@ -54,6 +57,7 @@ public class Asteroid extends BaseEntity {
 		super.render(p);
 
 		p.push();
+
 		p.translate(getX(), getY());
 		p.rotate(PApplet.radians(getRotation()));
 		p.shape(shape);
@@ -63,6 +67,11 @@ public class Asteroid extends BaseEntity {
 
 	@Override
 	public void update(float tpf) {
+
+		float newX = getX() + speedX * tpf;
+		float newY = getY() + speedY * tpf;
+		setPosition(newX, newY);
+
 		setRotation(getRotation() + rotationSpeed * tpf);
 	}
 }

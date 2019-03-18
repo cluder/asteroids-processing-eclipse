@@ -12,7 +12,7 @@ public class ParallaxStarField {
 
 	Star[][] starField;
 
-	public ParallaxStarField(GameManager gameManager, int numStars, int levels, int width, int height) {
+	public ParallaxStarField(GameManager gameManager, int numStars, int layers, int width, int height) {
 		this.gameManager = gameManager;
 		this.width = width;
 		this.height = height;
@@ -116,7 +116,7 @@ public class ParallaxStarField {
 
 				float newY = (s.getY() + -s.getYOffset()) % height;
 				if (newY < 0) {
-					newY = width + newY;
+					newY = height + newY;
 				}
 				p.point(newX, newY);
 			}

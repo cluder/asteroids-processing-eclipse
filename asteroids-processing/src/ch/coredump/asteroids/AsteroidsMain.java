@@ -12,7 +12,11 @@ public class AsteroidsMain extends PApplet {
 	Spaceship player;
 
 	public static void main(String[] args) {
-		PApplet.main(AsteroidsMain.class, args);
+		// start window on 2nd monitor (-1900)
+		// --display does not seem to work
+		String[] newArgs = append(args, "--location=-1900,400");
+		newArgs = append(newArgs, AsteroidsMain.class.getName());
+		PApplet.main(newArgs);
 	}
 
 	public AsteroidsMain() {
@@ -24,8 +28,8 @@ public class AsteroidsMain extends PApplet {
 	 */
 	@Override
 	public void settings() {
-		size(800, 600);
-//		size(800, 600, P2D);
+//		size(800, 600);
+		size(800, 600, P2D);
 	}
 
 	/**
@@ -34,13 +38,15 @@ public class AsteroidsMain extends PApplet {
 	 */
 	@Override
 	public void setup() {
-		noCursor();
-		manager = new GameManager(this, width, height);
 
-		// create one asteroid and player
+		noCursor();
+		manager = new GameManager(this, width, height, 300, 3);
+
+		// create asteroids and player
 		manager.spawnAsteroids(10);
 
-		player = new Spaceship(width / 2, height / 2);
+		player = new Spaceship(width / 4, height / 2);
+		player.setRotation(90);
 		manager.addPlayer(player);
 
 		// target framerate 30 fps
@@ -53,7 +59,6 @@ public class AsteroidsMain extends PApplet {
 	 */
 	@Override
 	public void draw() {
-		frameRate(30);
 		background(20);
 
 		manager.update();
@@ -72,7 +77,7 @@ public class AsteroidsMain extends PApplet {
 
 	private void movementKey(char key, int keyCode, boolean pressed) {
 		if (keyCode == UP || key == 'w') {
-			player.moveUp(pressed);
+			player.moveForward(pressed);
 		}
 		if (keyCode == LEFT || key == 'a') {
 			player.rotateLeft(pressed);
@@ -89,12 +94,13 @@ public class AsteroidsMain extends PApplet {
 		}
 
 		if (key == 'r') {
-			manager.resetStarfield(5, 100);
+			manager.resetStarfield(3, 300);
 		}
 	}
 
 	private void reset() {
-		player.setPosition(300, 300);
+		player.setDead(false);
+		player.setPosition(width / 4, height / 2);
 	}
 
 	@Override
@@ -103,6 +109,9 @@ public class AsteroidsMain extends PApplet {
 	}
 
 	private void fire() {
+		if (player.isDead()) {
+			return;
+		}
 		manager.addProjectile(player.fire());
 	}
 }

@@ -30,12 +30,12 @@ public class GameManager {
 	long lastFrameTime = System.currentTimeMillis();
 	long tpf = 0;
 
-	public GameManager(PApplet p, int width, int heigth) {
+	public GameManager(PApplet p, int width, int heigth, int numStars, int starLayers) {
 		this.width = width;
 		this.height = heigth;
 		this.processing = p;
 
-		starField = new ParallaxStarField(this, 100, 3, width, heigth);
+		starField = new ParallaxStarField(this, numStars, starLayers, width, heigth);
 	}
 
 	void addAsteroid(Asteroid e) {
@@ -54,6 +54,7 @@ public class GameManager {
 	 * Updates/moves the game entities
 	 */
 	void update() {
+
 		final long currentTime = System.currentTimeMillis();
 		tpf = currentTime - lastFrameTime;
 		lastFrameTime = currentTime;
@@ -79,6 +80,18 @@ public class GameManager {
 					deadProjectiles.add(e);
 					deadAsteroids.add(a);
 				}
+			}
+		}
+
+		// player vs asteroid
+		for (Asteroid a : asteroids) {
+			// asteroids outside of the screen are deleted
+			if (a.getX() + a.getBoundingBox().getW() < 0) {
+				a.setDead(true);
+				deadAsteroids.add(a);
+			}
+			if (spaceship.getBoundingBox().intersects(a.getBoundingBox())) {
+				spaceship.setDead(true);
 			}
 		}
 
@@ -130,12 +143,14 @@ public class GameManager {
 	}
 
 	/**
-	 * Create asteroids in random locations.
+	 * Create asteroids in random locations.<br>
+	 * Asteroids are spawned outside of the screen, to let them fly in from the
+	 * right.
 	 */
 	public void spawnAsteroids(int num) {
 		Random r = new Random();
 		for (int i = 0; i < num; i++) {
-			Asteroid a = new Asteroid(processing, r.nextInt(width), r.nextInt(height));
+			Asteroid a = new Asteroid(processing, r.nextInt(width) + width, r.nextInt(height));
 			addAsteroid(a);
 		}
 	}

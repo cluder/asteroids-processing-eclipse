@@ -27,6 +27,9 @@ public class Spaceship extends BaseEntity {
 	 */
 	@Override
 	public void render(PApplet p) {
+		if (dead) {
+			return;
+		}
 		super.render(p);
 
 		p.push();
@@ -51,6 +54,9 @@ public class Spaceship extends BaseEntity {
 
 	@Override
 	public void update(float tpf) {
+		if (dead) {
+			return;
+		}
 		final float rotationSpeedPerFrame = rotationSpeed * tpf;
 
 		if (moveUp) {
@@ -84,7 +90,7 @@ public class Spaceship extends BaseEntity {
 		setRotation(getRotation() % 360);
 	}
 
-	public void moveUp(boolean value) {
+	public void moveForward(boolean value) {
 		moveUp = value;
 	}
 
