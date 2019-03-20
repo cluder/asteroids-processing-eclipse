@@ -60,6 +60,7 @@ public class GameManager {
 		int asteroidsHit = 0;
 
 		starField.update(tpf);
+
 		// update other entities
 		for (BaseEntity e : asteroids) {
 			e.update(tpf);
@@ -113,6 +114,9 @@ public class GameManager {
 	}
 
 	private void updatePlayer() {
+		if (spaceship.isDead()) {
+			return;
+		}
 		spaceship.update(tpf);
 		if (spaceship.getY() < 0) {
 			spaceship.setY(spaceship.getY() + height);
@@ -125,6 +129,10 @@ public class GameManager {
 		if (spaceship.getX() < 0) {
 			spaceship.setDead(true);
 		}
+
+		// test
+		float drag = 0.05f;
+		spaceship.setX(spaceship.getX() - drag * tpf);
 	}
 
 	/**
@@ -189,5 +197,13 @@ public class GameManager {
 
 	public void setScore(int score) {
 		this.score = score;
+	}
+
+	public void resetPlayer() {
+		spaceship.setDead(false);
+		spaceship.setPosition(width / 4, height / 2);
+		spaceship.setRotation(90);
+		setScore(0);
+
 	}
 }

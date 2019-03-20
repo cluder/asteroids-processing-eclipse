@@ -36,7 +36,8 @@ public class AsteroidsMain extends PApplet {
 	@Override
 	public void setup() {
 
-		noCursor();
+//		noCursor();
+		cursor(CROSS);
 		manager = new GameManager(this, width, height);
 
 		// create asteroids and player
@@ -83,22 +84,16 @@ public class AsteroidsMain extends PApplet {
 			player.rotateRight(pressed);
 		}
 
-		if (keyCode == BACKSPACE) {
-			reset();
+		if (keyCode == BACKSPACE && pressed) {
+			manager.resetPlayer();
 		}
 		if (key == ' ' && pressed) {
 			fire();
 		}
 
-		if (key == 'r') {
+		if (key == 'r' && pressed) {
 			manager.resetStarfield();
 		}
-	}
-
-	private void reset() {
-		player.setDead(false);
-		player.setPosition(width / 4, height / 2);
-		manager.setScore(0);
 	}
 
 	@Override

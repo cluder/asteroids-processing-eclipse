@@ -72,7 +72,7 @@ public class StarField {
 	 * move stars very slowly (drifting)
 	 */
 	private void drift(float tpf, float speedFactorPerLayer) {
-		float speed = 0.01f;
+		float speed = -0.1f;
 
 		for (int layer = 0; layer < layers; layer++) {
 			for (int star = 0; star < numStars; star++) {
@@ -86,9 +86,9 @@ public class StarField {
 				newX %= width;
 				s.setX(newX);
 
-				float newY = s.getY() + velPerFrame;
-				newY %= height;
-				s.setY(newY);
+//				float newY = s.getY() + velPerFrame;
+//				newY %= height;
+//				s.setY(newY);
 			}
 		}
 	}
