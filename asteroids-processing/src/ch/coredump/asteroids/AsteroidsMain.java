@@ -8,6 +8,7 @@ import processing.event.KeyEvent;
  * Main class, setup and start the processing environment.
  */
 public class AsteroidsMain extends PApplet {
+
 	GameManager manager;
 	Spaceship player;
 
@@ -17,10 +18,6 @@ public class AsteroidsMain extends PApplet {
 		String[] newArgs = append(args, "--location=-1900,400");
 		newArgs = append(newArgs, AsteroidsMain.class.getName());
 		PApplet.main(newArgs);
-	}
-
-	public AsteroidsMain() {
-
 	}
 
 	/**
@@ -40,7 +37,7 @@ public class AsteroidsMain extends PApplet {
 	public void setup() {
 
 		noCursor();
-		manager = new GameManager(this, width, height, 300, 3);
+		manager = new GameManager(this, width, height);
 
 		// create asteroids and player
 		manager.spawnAsteroids(15);
@@ -94,13 +91,14 @@ public class AsteroidsMain extends PApplet {
 		}
 
 		if (key == 'r') {
-			manager.resetStarfield(3, 300);
+			manager.resetStarfield();
 		}
 	}
 
 	private void reset() {
 		player.setDead(false);
 		player.setPosition(width / 4, height / 2);
+		manager.setScore(0);
 	}
 
 	@Override

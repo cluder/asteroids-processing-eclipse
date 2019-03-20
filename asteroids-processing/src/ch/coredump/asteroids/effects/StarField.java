@@ -3,7 +3,9 @@ package ch.coredump.asteroids.effects;
 import ch.coredump.asteroids.GameManager;
 import processing.core.PApplet;
 
-public class ParallaxStarField {
+public class StarField {
+	public static final int SF_NUM_STARS = 100;
+	public static final int SF_NUM_LAYERS = 3;
 	GameManager gameManager;
 	int width;
 	int height;
@@ -12,18 +14,22 @@ public class ParallaxStarField {
 
 	Star[][] starField;
 
-	public ParallaxStarField(GameManager gameManager, int numStars, int layers, int width, int height) {
+	public StarField(GameManager gameManager, int width, int height) {
 		this.gameManager = gameManager;
 		this.width = width;
 		this.height = height;
 
-		init(layers, numStars);
+		init();
+	}
+
+	public void init() {
+		init(SF_NUM_LAYERS, SF_NUM_STARS);
 	}
 
 	/**
 	 * Creates the star field by placing x layers of random stars.
 	 */
-	private void init(int layers, int numStars) {
+	public void init(int layers, int numStars) {
 		this.layers = layers;
 		this.numStars = numStars;
 
@@ -124,7 +130,4 @@ public class ParallaxStarField {
 		p.pop();
 	}
 
-	public void reset(int layers, int stars) {
-		init(layers, stars);
-	}
 }

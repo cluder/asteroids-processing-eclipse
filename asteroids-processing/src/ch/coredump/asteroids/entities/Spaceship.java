@@ -4,11 +4,10 @@ import processing.core.PApplet;
 import processing.core.PVector;
 
 public class Spaceship extends BaseEntity {
-	boolean moveUp = false;
+	boolean moveForward = false;
 	boolean rotateLeft = false;
 	boolean rotateRight = false;
 
-	// 50 pixel size
 	int size = 20;
 
 	// rotation speed
@@ -59,7 +58,7 @@ public class Spaceship extends BaseEntity {
 		}
 		final float rotationSpeedPerFrame = rotationSpeed * tpf;
 
-		if (moveUp) {
+		if (moveForward) {
 			// we subtract 90°, so that 0° points north
 			final double rotationRadians = Math.toRadians(getRotation() - 90);
 			float dirX = (float) Math.cos(rotationRadians);
@@ -68,7 +67,7 @@ public class Spaceship extends BaseEntity {
 
 			direction = direction.normalize();
 
-			// Then scale it by the current speed to get the velocity
+			// then scale it by the current speed to get the velocity
 			float velX = direction.x * speed;
 			float velY = direction.y * speed;
 
@@ -76,7 +75,6 @@ public class Spaceship extends BaseEntity {
 			float newY = getY() + velY * tpf;
 
 			setPosition(newX, newY);
-
 		}
 
 		if (rotateLeft) {
@@ -91,7 +89,7 @@ public class Spaceship extends BaseEntity {
 	}
 
 	public void moveForward(boolean value) {
-		moveUp = value;
+		moveForward = value;
 	}
 
 	public void rotateLeft(boolean value) {
@@ -104,5 +102,13 @@ public class Spaceship extends BaseEntity {
 
 	public Projectile fire() {
 		return new Projectile(getX(), getY(), getRotation());
+	}
+
+	public void setY(float newY) {
+		setPosition(getX(), newY);
+	}
+
+	public void setX(float newX) {
+		setPosition(newX, getY());
 	}
 }
