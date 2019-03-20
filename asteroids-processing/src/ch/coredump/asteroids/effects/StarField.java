@@ -1,12 +1,12 @@
 package ch.coredump.asteroids.effects;
 
-import ch.coredump.asteroids.GameManager;
+import ch.coredump.asteroids.gamestates.MainGameState;
 import processing.core.PApplet;
 
 public class StarField {
 	public static final int SF_NUM_STARS = 100;
 	public static final int SF_NUM_LAYERS = 3;
-	GameManager gameManager;
+	MainGameState gameState;
 	int width;
 	int height;
 	int numStars;
@@ -14,8 +14,8 @@ public class StarField {
 
 	Star[][] starField;
 
-	public StarField(GameManager gameManager, int width, int height) {
-		this.gameManager = gameManager;
+	public StarField(MainGameState gameState, int width, int height) {
+		this.gameState = gameState;
 		this.width = width;
 		this.height = height;
 
@@ -46,8 +46,8 @@ public class StarField {
 	}
 
 	public void update(float tpf) {
-		final float playerX = gameManager.getSpaceship().getX();
-		final float playerY = gameManager.getSpaceship().getY();
+		final float playerX = gameState.getSpaceship().getX();
+		final float playerY = gameState.getSpaceship().getY();
 		// player offset from center of screen
 		float playerOffsetX = playerX - width / 2;
 		float playerOffsetY = playerY - height / 2;

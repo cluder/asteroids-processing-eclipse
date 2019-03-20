@@ -1,8 +1,10 @@
 package ch.coredump.asteroids;
 
 import ch.coredump.asteroids.entities.Spaceship;
+import ch.coredump.asteroids.gamestates.MenuGameState;
 import processing.core.PApplet;
 import processing.event.KeyEvent;
+import processing.event.MouseEvent;
 
 /**
  * Main class, setup and start the processing environment.
@@ -25,7 +27,6 @@ public class AsteroidsMain extends PApplet {
 	 */
 	@Override
 	public void settings() {
-//		size(800, 600);
 		size(800, 600, P2D);
 	}
 
@@ -38,14 +39,11 @@ public class AsteroidsMain extends PApplet {
 
 //		noCursor();
 		cursor(CROSS);
-		manager = new GameManager(this, width, height);
 
-		// create asteroids and player
-		manager.spawnAsteroids(15);
-
-		player = new Spaceship(width / 4, height / 2);
-		player.setRotation(90);
-		manager.addPlayer(player);
+		// create game manager with an initial game state (menu)
+		manager = new GameManager();
+		final MenuGameState menuGameState = new MenuGameState(this, manager);
+		manager.setGameState(menuGameState);
 
 		// target framerate 30 fps
 		frameRate(30);
@@ -64,47 +62,20 @@ public class AsteroidsMain extends PApplet {
 	}
 
 	@Override
-	public void keyPressed() {
-		movementKey(key, keyCode, true);
+	public void keyPressed(KeyEvent event) {
+		manager.keyPressed(event);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent event) {
-		movementKey(key, keyCode, false);
+		manager.keyReleased(event);
 	}
 
-	private void movementKey(char key, int keyCode, boolean pressed) {
-		if (keyCode == UP || key == 'w') {
-			player.moveForward(pressed);
-		}
-		if (keyCode == LEFT || key == 'a') {
-			player.rotateLeft(pressed);
-		}
-		if (keyCode == RIGHT || key == 'd') {
-			player.rotateRight(pressed);
-		}
-
-		if (keyCode == BACKSPACE && pressed) {
-			manager.resetPlayer();
-		}
-		if (key == ' ' && pressed) {
-			fire();
-		}
-
-		if (key == 'r' && pressed) {
-			manager.resetStarfield();
-		}
-	}
-
+	/**
+	 * Pass event to GameManager, which passes it to the current active GameState.
+	 */
 	@Override
-	public void mousePressed() {
-		fire();
-	}
-
-	private void fire() {
-		if (player.isDead()) {
-			return;
-		}
-		manager.addProjectile(player.fire());
+	public void mousePressed(MouseEvent event) {
+		manager.mousePressed(event);
 	}
 }
