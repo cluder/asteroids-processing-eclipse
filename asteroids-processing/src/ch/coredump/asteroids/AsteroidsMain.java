@@ -17,7 +17,8 @@ public class AsteroidsMain extends PApplet {
 	public static void main(String[] args) {
 		// start window on 2nd monitor (-1900)
 		// --display does not seem to work
-		String[] newArgs = append(args, "--location=-1900,400");
+		String[] newArgs = new String[0];
+//		String[] newArgs = append(args, "--location=-1900,400");
 		newArgs = append(newArgs, AsteroidsMain.class.getName());
 		PApplet.main(newArgs);
 	}
